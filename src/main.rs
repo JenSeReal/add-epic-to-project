@@ -6,6 +6,9 @@ fn main() {
   let github_output_path = env::var("GITHUB_OUTPUT").unwrap();
 
   let args: Vec<String> = env::args().collect();
+
+  println!("{:#?}", args);
+
   let error = &args[1];
 
   if !error.is_empty() {
