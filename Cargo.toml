@@ -1,0 +1,8 @@
+[package]
+name = "add-epic-to-project"
+description = "This action takes issues with a certain tag and add the title as a new option in a projects custom field single select field."
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.67"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
