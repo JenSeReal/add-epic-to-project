@@ -1,13 +1,21 @@
-use std::{env, fmt::write};
+use std::env;
+
+use crate::params::{Args, Params};
 // use std::fs::write;
 // use std::process::exit;
 
-fn main() {
-  let mut github_output_path = env::var("GITHUB_OUTPUT").unwrap();
+mod errors;
+mod params;
 
-  let args: Vec<String> = env::args().collect();
+fn main() -> anyhow::Result<(), anyhow::Error> {
+  // let mut github_output_path = env::var("GITHUB_OUTPUT").unwrap();
 
-  dbg!(args);
+  let args = Args(env::args().collect());
+  dbg!(args.clone());
+
+  let params = Params::try_from(args)?;
+
+  dbg!(params);
 
   // let error = &args[1];
 
@@ -16,4 +24,6 @@ fn main() {
   //   write(github_output_path, format!("error={error}")).unwrap();
   //   exit(1);
   // }
+
+  Ok(())
 }
