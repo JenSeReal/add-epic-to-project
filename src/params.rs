@@ -24,22 +24,22 @@ impl TryFrom<Args> for Params {
     Ok(Self {
       project_url: value
         .0
-        .get(0)
+        .get(1)
         .context("Missing project-url parameter")?
         .clone(),
       github_token: value
         .0
-        .get(1)
+        .get(2)
         .context("Missing github-token parameter")?
         .clone(),
       labels: value
         .0
-        .get(2)
+        .get(3)
         .and_then(|s| Some(s.split(",").map(String::from).collect()))
         .unwrap_or(vec![]),
       operator: value
         .0
-        .get(3)
+        .get(4)
         .and_then(|s| Operator::from_str(&s).ok())
         .unwrap_or_default(),
     })
