@@ -20,7 +20,7 @@ runs:
   using: "docker"
   image: "Dockerfile"
   args:
-    - ${{ inputs.projet-url }}
+    - ${{ inputs.project-url }}
     - ${{ inputs.github-token }}
     - ${{ inputs.labels }}
     - ${{ inputs.label-operator }}
