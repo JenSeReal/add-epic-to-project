@@ -7,9 +7,7 @@ fn main() {
 
   let args: Vec<String> = env::args().collect();
 
-  println!("{:#?}", args.get(0));
-
-  write(&mut github_output_path, format_args!("Hello, World!")).unwrap();
+  println!("{:#?}", format!("{:?}", args.get(1)));
 
   // let error = &args[1];
 
