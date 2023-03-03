@@ -18,7 +18,7 @@ inputs:
     description: The behavior of the labels filter, AND to match all labels, OR to match any label, NOT to exclude any listed label (default is OR)
 runs:
   using: "docker"
-  image: "Dockerfile"
+  image: "docker://ghcr.io/jensereal/add-epic-to-project"
   args:
     - ${{ inputs.project-url }}
     - ${{ inputs.github-token }}
