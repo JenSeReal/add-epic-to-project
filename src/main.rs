@@ -1,13 +1,15 @@
-use std::env;
+use std::{env, fmt::write};
 // use std::fs::write;
 // use std::process::exit;
 
 fn main() {
-  // let github_output_path = env::var("GITHUB_OUTPUT").unwrap();
+  let mut github_output_path = env::var("GITHUB_OUTPUT").unwrap();
 
   let args: Vec<String> = env::args().collect();
 
   println!("{:#?}", args);
+
+  write(&mut github_output_path, format_args!("Hello, World!")).unwrap();
 
   // let error = &args[1];
 
