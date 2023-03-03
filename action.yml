@@ -10,6 +10,7 @@ inputs:
     description: A GitHub personal access token with write access to the project
   labels:
     required: false
+    default: epic
     description: A comma-separated list of labels to use as a filter for issue to be added
   label-operator:
     required: false
