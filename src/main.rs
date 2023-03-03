@@ -7,7 +7,7 @@ fn main() {
 
   let args: Vec<String> = env::args().collect();
 
-  println!("{:#?}", format!("{:?}", args.get(1)));
+  println!("{:#?}", format!("{:?}", args.get(2)));
 
   // let error = &args[1];
 
