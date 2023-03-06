@@ -9,7 +9,7 @@ use crate::errors;
 #[derive(Debug, Clone)]
 pub struct Args(pub Vec<String>);
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Params {
   project_url: String,
   github_token: String,
@@ -35,18 +35,24 @@ impl TryFrom<Args> for Params {
       labels: value
         .0
         .get(3)
-        .and_then(|s| Some(s.split(",").map(String::from).collect()))
+        .map(|s| s.split(',').map(String::from).collect())
         .unwrap_or(vec![]),
       operator: value
         .0
         .get(4)
-        .and_then(|s| Operator::from_str(&s).ok())
+        .and_then(|s| Operator::from_str(s).ok())
         .unwrap_or_default(),
     })
   }
 }
 
-#[derive(Debug)]
+impl Params {
+  pub fn github_token(&self) -> &str {
+    &self.github_token
+  }
+}
+
+#[derive(Debug, Clone)]
 pub enum Operator {
   And,
   Or,

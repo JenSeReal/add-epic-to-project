@@ -1,11 +1,11 @@
 use std::env;
 
-use crate::params::{Args, Params};
+use crate::models::{Args, Params};
 // use std::fs::write;
 // use std::process::exit;
 
 mod errors;
-mod params;
+mod models;
 
 fn main() -> anyhow::Result<(), anyhow::Error> {
   // let mut github_output_path = env::var("GITHUB_OUTPUT").unwrap();
@@ -15,7 +15,15 @@ fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let params = Params::try_from(args)?;
 
-  dbg!(params);
+  dbg!(params.clone());
+
+  let gh = octocrab::OctocrabBuilder::new()
+    .personal_token(params.github_token().to_string())
+    .build()?;
+
+  dbg!(gh);
+
+  dbg!(env::var("GITHUB_REF")?);
 
   // let error = &args[1];
 
