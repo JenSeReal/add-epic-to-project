@@ -23,7 +23,9 @@ fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(gh);
 
-  dbg!(env::var("GITHUB_REF")?);
+  for (key, value) in env::vars() {
+    dbg!(format!("{key}: {value}"));
+  }
 
   // let error = &args[1];
 
