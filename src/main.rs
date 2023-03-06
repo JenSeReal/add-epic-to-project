@@ -13,7 +13,9 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let params = Params::try_from(Args(env::args().collect()))?;
 
-  let _crab = octocrab::OctocrabBuilder::new()
+  dbg!(&params);
+
+  let crab = octocrab::OctocrabBuilder::new()
     .personal_token(params.github_token().to_string())
     .build()?;
 
@@ -25,12 +27,10 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let mut labels = event.issue().labels();
 
-  let contains = |s: &String| params.labels().contains(s);
-
   let is_epic = match params.operator() {
-    Operator::And => labels.all(contains),
-    Operator::Or => labels.any(contains),
-    Operator::Not => labels.all(contains),
+    Operator::And => labels.all(|s| params.labels().contains(s)),
+    Operator::Or => labels.any(|s| params.labels().contains(s)),
+    Operator::Not => labels.all(|s| !params.labels().contains(s)),
   };
 
   dbg!(is_epic);
