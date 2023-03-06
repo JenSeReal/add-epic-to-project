@@ -6,7 +6,6 @@ use crate::models::{Args, Operator, Params};
 
 mod errors;
 mod models;
-mod utils;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<(), anyhow::Error> {
