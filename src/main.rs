@@ -1,6 +1,6 @@
 use std::{env, fs};
 
-use crate::models::{Args, Operator, Params};
+use crate::models::{Args, Label, Operator, Params};
 // use std::fs::write;
 // use std::process::exit;
 
@@ -15,9 +15,9 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(&params);
 
-  // let crab = octocrab::OctocrabBuilder::new()
-  //   .personal_token(params.github_token().to_string())
-  //   .build()?;
+  let crab = octocrab::OctocrabBuilder::new()
+    .personal_token(params.github_token().to_string())
+    .build()?;
 
   let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
 
@@ -27,10 +27,12 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let mut labels = event.issue().labels();
 
+  let contains = |l: &Label| params.labels().contains(&l.name().to_string());
+
   let is_epic = match params.operator() {
-    Operator::And => labels.all(|s| params.labels().contains(s)),
-    Operator::Or => labels.any(|s| params.labels().contains(s)),
-    Operator::Not => labels.all(|s| !params.labels().contains(s)),
+    Operator::And => labels.all(contains),
+    Operator::Or => labels.any(contains),
+    Operator::Not => !labels.any(contains),
   };
 
   dbg!(is_epic);

@@ -101,7 +101,7 @@ impl IssueEvent {
 #[derive(Serialize, Deserialize)]
 pub struct Issue {
   id: u32,
-  labels: Vec<String>,
+  labels: Vec<Label>,
   number: u32,
 }
 
@@ -110,11 +110,23 @@ impl Issue {
     self.id
   }
 
-  pub fn labels(&self) -> impl Iterator<Item = &String> + '_ {
+  pub fn labels(&self) -> impl Iterator<Item = &Label> + '_ {
     self.labels.iter()
   }
 
   pub fn number(&self) -> u32 {
     self.number
+  }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Label {
+  id: u32,
+  name: String,
+}
+
+impl Label {
+  pub fn name(&self) -> &str {
+    &self.name
   }
 }
