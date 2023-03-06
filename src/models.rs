@@ -100,13 +100,13 @@ impl IssueEvent {
 
 #[derive(Serialize, Deserialize)]
 pub struct Issue {
-  id: u32,
+  id: u64,
   labels: Vec<Label>,
   number: u32,
 }
 
 impl Issue {
-  pub fn id(&self) -> u32 {
+  pub fn id(&self) -> u64 {
     self.id
   }
 
