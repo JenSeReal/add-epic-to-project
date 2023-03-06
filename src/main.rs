@@ -15,9 +15,9 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(&params);
 
-  let crab = octocrab::OctocrabBuilder::new()
-    .personal_token(params.github_token().to_string())
-    .build()?;
+  // let crab = octocrab::OctocrabBuilder::new()
+  //   .personal_token(params.github_token().to_string())
+  //   .build()?;
 
   let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
 
