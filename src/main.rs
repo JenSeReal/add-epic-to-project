@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, fs};
 
 use crate::models::{Args, Params};
 // use std::fs::write;
@@ -7,7 +7,8 @@ use crate::models::{Args, Params};
 mod errors;
 mod models;
 
-fn main() -> anyhow::Result<(), anyhow::Error> {
+#[tokio::main]
+async fn main() -> anyhow::Result<(), anyhow::Error> {
   // let mut github_output_path = env::var("GITHUB_OUTPUT").unwrap();
 
   let args = Args(env::args().collect());
@@ -17,11 +18,13 @@ fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(params.clone());
 
-  let gh = octocrab::OctocrabBuilder::new()
+  let crab = octocrab::OctocrabBuilder::new()
     .personal_token(params.github_token().to_string())
     .build()?;
 
-  dbg!(gh);
+  let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
+
+  dbg!(event);
 
   for (key, value) in env::vars() {
     dbg!(format!("{key}: {value}"));
