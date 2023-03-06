@@ -24,7 +24,10 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
 
+  let event_crab = crab.events().send().await?;
+
   dbg!(event);
+  dbg!(event_crab);
 
   for (key, value) in env::vars() {
     dbg!(format!("{key}: {value}"));
