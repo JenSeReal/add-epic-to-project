@@ -3,6 +3,7 @@
 use std::str::FromStr;
 
 use anyhow::Context;
+use serde::{Deserialize, Serialize};
 
 use crate::errors;
 
@@ -75,5 +76,37 @@ impl FromStr for Operator {
 impl Default for Operator {
   fn default() -> Self {
     Self::Or
+  }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct IssueEvent {
+  issue: Issue,
+}
+
+impl IssueEvent {
+  pub fn issue(&self) -> &Issue {
+    &self.issue
+  }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Issue {
+  id: u32,
+  labels: Vec<String>,
+  number: u32,
+}
+
+impl Issue {
+  pub fn id(&self) -> u32 {
+    self.id
+  }
+
+  pub fn labels(&self) -> &Vec<String> {
+    &self.labels
+  }
+
+  pub fn number(&self) -> u32 {
+    self.number
   }
 }
