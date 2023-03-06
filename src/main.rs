@@ -26,9 +26,9 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(event);
 
-  // let event_crab = crab.events().send().await?;
+  let event_crab = crab.events().send().await;
 
-  // dbg!(event_crab);
+  dbg!(event_crab);
 
   for (key, value) in env::vars() {
     dbg!(format!("{key}: {value}"));
