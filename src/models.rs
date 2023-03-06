@@ -51,6 +51,14 @@ impl Params {
   pub fn github_token(&self) -> &str {
     &self.github_token
   }
+
+  pub fn operator(&self) -> &Operator {
+    &self.operator
+  }
+
+  pub fn labels(&self) -> &Vec<String> {
+    &self.labels
+  }
 }
 
 #[derive(Debug, Clone)]
@@ -102,8 +110,8 @@ impl Issue {
     self.id
   }
 
-  pub fn labels(&self) -> &Vec<String> {
-    &self.labels
+  pub fn labels(&self) -> impl Iterator<Item = &String> + '_ {
+    self.labels.iter()
   }
 
   pub fn number(&self) -> u32 {
