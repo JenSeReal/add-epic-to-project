@@ -22,9 +22,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
   let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
 
   let event: models::IssueEvent = serde_json::from_str(&event)?;
-
   let mut labels = event.issue().labels();
-
   let contains = |l: &Label| params.labels().contains(&l.name().to_string());
 
   let is_epic = match params.operator() {
@@ -32,6 +30,8 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     Operator::Or => labels.any(contains),
     Operator::Not => !labels.any(contains),
   };
+
+  dbg!(labels.collect::<Vec<_>>());
 
   dbg!(is_epic);
 
