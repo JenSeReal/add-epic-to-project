@@ -14,7 +14,6 @@ RUN rm src/*.rs
 
 # copy your source tree
 COPY ./src ./src
-COPY ./schemas ./schemas
 
 # build for release
 RUN rm ./target/release/deps/add_epic_to_project*
