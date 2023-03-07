@@ -62,7 +62,7 @@ impl TryFrom<Args> for Params {
       labels: value
         .0
         .get(3)
-        .map(|s| s.split(',').map(String::from).collect())
+        .map(|s| s.split(',').map(|s| s.trim()).map(String::from).collect())
         .unwrap_or(vec![]),
       operator: value
         .0
