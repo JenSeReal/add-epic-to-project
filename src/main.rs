@@ -20,8 +20,10 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     .build()?;
 
   let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
+  dbg!(&event);
 
   let event: models::IssueEvent = serde_json::from_str(&event)?;
+
   let mut labels = event.issue().labels();
   let contains = |l: &Label| params.labels().contains(&l.name().to_string());
 
