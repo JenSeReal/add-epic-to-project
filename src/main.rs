@@ -24,6 +24,8 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let event: models::IssueEvent = serde_json::from_str(&event)?;
 
+  dbg!(&event);
+
   let mut labels = event.issue().labels();
   let contains = |l: &Label| params.labels().contains(&l.name().to_string());
 

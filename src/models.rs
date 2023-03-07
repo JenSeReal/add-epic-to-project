@@ -113,7 +113,7 @@ impl Default for Operator {
   }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct IssueEvent {
   issue: Issue,
 }
@@ -124,7 +124,7 @@ impl IssueEvent {
   }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Issue {
   id: u64,
   labels: Vec<Label>,
