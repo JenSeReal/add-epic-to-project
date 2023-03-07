@@ -1,7 +1,0 @@
-query GetProjectOrg($projectOwnerName: String!, $projectNumber: Int!) {
-  organization(login: $projectOwnerName) {
-    projectV2(number: $projectNumber) {
-      id
-    }
-  }
-}

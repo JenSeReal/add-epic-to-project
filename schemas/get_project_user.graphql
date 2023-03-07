@@ -1,7 +1,0 @@
-query GetProjectUser($projectOwnerName: String!, $projectNumber: Int!) {
-  user(login: $projectOwnerName) {
-    projectV2(number: $projectNumber) {
-      id
-    }
-  }
-}

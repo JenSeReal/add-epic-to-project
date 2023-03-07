@@ -2,16 +2,12 @@ use std::{env, fs};
 
 use serde_json::json;
 
-use crate::{
-  models::{Args, Label, Operator, Params},
-  queries::{get_project_user, GetProjectOrg, GetProjectUser},
-};
+use crate::models::{Args, Label, Operator, OwnerType, Params};
 // use std::fs::write;
 // use std::process::exit;
 
 mod errors;
 mod models;
-mod queries;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<(), anyhow::Error> {
@@ -40,14 +36,25 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(is_epic);
 
-  let project_variables = get_project_user::Variables {
-    project_number: params.project_url().number(),
-    project_owner_name: params.project_url().owner_name().to_string(),
-  };
+  let query = format!(
+    r#"query getProject($projectOwnerName: String!, $projectNumber: Int!) {{
+      {:#?}(login: $projectOwnerName) {{
+        projectV2(number: $projectNumber) {{
+          id
+        }}
+      }}
+    }}
+  "#,
+    params.project().owner_type()
+  );
 
   let body = json!({
-    "query": GetProjectUser {},
-    "variables": project_variables
+    "query": query,
+    "variables": {
+          "project_number": params.project().number(),
+    "project_owner_name": params.project().owner_name().to_string(),
+
+    }
   });
 
   dbg!(body.to_string());
