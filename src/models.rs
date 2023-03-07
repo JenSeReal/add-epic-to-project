@@ -39,7 +39,7 @@ pub struct ProjectUrl {
   url: String,
   owner_name: String,
   owner_type: OwnerType,
-  number: u64,
+  number: i64,
 }
 
 impl FromStr for ProjectUrl {
@@ -72,6 +72,16 @@ impl FromStr for ProjectUrl {
       owner_type,
       number,
     })
+  }
+}
+
+impl ProjectUrl {
+  pub fn owner_name(&self) -> &str {
+    &self.owner_name
+  }
+
+  pub fn number(&self) -> i64 {
+    self.number
   }
 }
 

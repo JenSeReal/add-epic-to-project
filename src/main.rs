@@ -4,7 +4,7 @@ use serde_json::json;
 
 use crate::{
   models::{Args, Label, Operator, Params},
-  queries::{GetProjectOrg, GetProjectUser},
+  queries::{get_project_user, GetProjectOrg, GetProjectUser},
 };
 // use std::fs::write;
 // use std::process::exit;
@@ -40,9 +40,17 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(is_epic);
 
-  let project = json!(GetProjectUser {});
+  let project_variables = get_project_user::Variables {
+    project_number: params.project_url().number(),
+    project_owner_name: params.project_url().owner_name().to_string(),
+  };
 
-  dbg!(project.to_string());
+  let body = json!({
+    "query": GetProjectUser {},
+    "variables": project_variables
+  });
+
+  dbg!(body.to_string());
 
   // let response = crab.events().send().await?;
 
