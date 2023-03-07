@@ -11,7 +11,7 @@ use crate::errors;
 pub struct ProjectUrl {
   url: String,
   owner: String,
-  id: u64,
+  number: u64,
 }
 
 impl FromStr for ProjectUrl {
@@ -32,7 +32,7 @@ impl FromStr for ProjectUrl {
     Ok(Self {
       url: s.to_string(),
       owner,
-      id,
+      number: id,
     })
   }
 }
@@ -190,7 +190,7 @@ mod test {
       "https://github.com/users/JenSeReal/projects/3".to_string()
     );
     assert_eq!(project_url.owner, "JenSeReal".to_string());
-    assert_eq!(project_url.id, 3);
+    assert_eq!(project_url.number, 3);
 
     Ok(())
   }
