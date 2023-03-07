@@ -147,7 +147,7 @@ impl Issue {
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Eq, Debug)]
 pub struct Label {
-  id: u32,
+  id: u64,
   name: String,
 }
 
