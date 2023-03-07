@@ -54,6 +54,8 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     }
   });
 
+  dbg!(project_query);
+
   let response = crab.post("graphql", Some(&project_request)).await?;
 
   dbg!(response);
