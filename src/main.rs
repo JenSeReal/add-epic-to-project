@@ -2,7 +2,7 @@ use std::{env, fs};
 
 use serde_json::json;
 
-use crate::models::{Args, Label, Operator, OwnerType, Params};
+use crate::models::{Args, Label, Operator, Params};
 // use std::fs::write;
 // use std::process::exit;
 
@@ -14,14 +14,12 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
   // let mut github_output_path = env::var("GITHUB_OUTPUT").unwrap();
 
   let params = Params::try_from(Args(env::args().collect()))?;
-
-  let _crab = octocrab::OctocrabBuilder::new()
+  let crab = octocrab::OctocrabBuilder::new()
     .personal_token(params.github_token().to_string())
     .build()?;
 
-  let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
-
-  let event: models::IssueEvent = serde_json::from_str(&event)?;
+  let event_string = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
+  let event: models::IssueEvent = serde_json::from_str(&event_string)?;
 
   let mut labels = event.issue().labels();
   let contains = |l: &Label| params.labels().contains(&l.name().to_string());
@@ -36,7 +34,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(is_epic);
 
-  let query = format!(
+  let project_query = format!(
     r#"query getProject($projectOwnerName: String!, $projectNumber: Int!) {{
       {:#?}(login: $projectOwnerName) {{
         projectV2(number: $projectNumber) {{
@@ -48,24 +46,17 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     params.project().owner_type()
   );
 
-  let body = json!({
-    "query": query,
+  let project_request = json!({
+    "query": project_query,
     "variables": {
-          "project_number": params.project().number(),
-    "project_owner_name": params.project().owner_name().to_string(),
-
+      "project_number": params.project().number(),
+      "project_owner_name": params.project().owner_name().to_string(),
     }
   });
 
-  dbg!(body.to_string());
+  let response = crab.post("graphql", Some(&project_request)).await?;
 
-  // let response = crab.events().send().await?;
-
-  // dbg!(response);
-
-  // if event.issue().labels().
-
-  // let error = &args[1];
+  dbg!(response);
 
   // if !error.is_empty() {
   //   eprintln!("Error: {error}");
