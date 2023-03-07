@@ -1,11 +1,17 @@
 use std::{env, fs};
 
-use crate::models::{Args, Label, Operator, Params};
+use serde_json::json;
+
+use crate::{
+  models::{Args, Label, Operator, Params},
+  queries::{GetProjectOrg, GetProjectUser},
+};
 // use std::fs::write;
 // use std::process::exit;
 
 mod errors;
 mod models;
+mod queries;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<(), anyhow::Error> {
@@ -13,18 +19,13 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let params = Params::try_from(Args(env::args().collect()))?;
 
-  dbg!(&params);
-
   let _crab = octocrab::OctocrabBuilder::new()
     .personal_token(params.github_token().to_string())
     .build()?;
 
   let event = fs::read_to_string(env::var("GITHUB_EVENT_PATH")?)?;
-  dbg!(&event);
 
   let event: models::IssueEvent = serde_json::from_str(&event)?;
-
-  dbg!(&event);
 
   let mut labels = event.issue().labels();
   let contains = |l: &Label| params.labels().contains(&l.name().to_string());
@@ -35,9 +36,13 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     Operator::Not => !labels.any(contains),
   };
 
-  dbg!(labels.collect::<Vec<_>>());
+  dbg!(event.issue().labels().collect::<Vec<_>>());
 
   dbg!(is_epic);
+
+  let project = json!(GetProjectUser {});
+
+  dbg!(project.to_string());
 
   // let response = crab.events().send().await?;
 
