@@ -1,7 +1,5 @@
 use std::{env, fs};
 
-use octocrab::{etag::Etagged, models::events::Event, Page};
-
 use crate::models::{Args, Label, Operator, Params};
 // use std::fs::write;
 // use std::process::exit;
@@ -25,8 +23,6 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   let event: models::IssueEvent = serde_json::from_str(&event)?;
 
-  dbg!(event.issue().id());
-
   let mut labels = event.issue().labels();
 
   let contains = |l: &Label| params.labels().contains(&l.name().to_string());
@@ -39,9 +35,9 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
   dbg!(is_epic);
 
-  let response: Etagged<Page<Event>> = _crab.events().send().await?;
+  // let response = crab.events().send().await?;
 
-  dbg!(response);
+  // dbg!(response);
 
   // if event.issue().labels().
 
