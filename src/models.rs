@@ -46,7 +46,7 @@ impl FromStr for Project {
   type Err = anyhow::Error;
 
   fn from_str(s: &str) -> Result<Self, Self::Err> {
-    let split = s.split("/").skip(3).map(String::from).collect::<Vec<_>>();
+    let split = s.split('/').skip(3).map(String::from).collect::<Vec<_>>();
 
     let owner_type = OwnerType::from_str(
       split
