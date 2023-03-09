@@ -1,0 +1,15 @@
+query GetProjectUser($projectOwnerName: String!, $projectNumber: Int!) {
+  user(login: $projectOwnerName) {
+    projectV2(number: $projectNumber) {
+      id
+    }
+  }
+}
+
+query GetProjectOrg($projectOwnerName: String!, $projectNumber: Int!) {
+  organization(login: $projectOwnerName) {
+    projectV2(number: $projectNumber) {
+      id
+    }
+  }
+}

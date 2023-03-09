@@ -48,8 +48,6 @@ impl FromStr for Project {
   fn from_str(s: &str) -> Result<Self, Self::Err> {
     let split = s.split("/").skip(3).map(String::from).collect::<Vec<_>>();
 
-    dbg!(&split);
-
     let owner_type = OwnerType::from_str(
       split
         .get(0)

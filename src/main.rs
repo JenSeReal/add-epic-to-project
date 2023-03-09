@@ -2,7 +2,9 @@ use std::{env, fs};
 
 use serde_json::json;
 
-use crate::models::{Args, Label, Operator, Params};
+use crate::{
+  models::{Args, Label, Operator, Params},
+};
 // use std::fs::write;
 // use std::process::exit;
 
