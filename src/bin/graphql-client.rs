@@ -1,5 +1,6 @@
 use std::env;
 
+use anyhow::Context;
 use graphql_client::{GraphQLQuery, Response};
 
 macro_rules! generate_query {
@@ -21,26 +22,24 @@ generate_query!(GetProjectOrg);
 async fn main() -> anyhow::Result<(), anyhow::Error> {
   dotenv::dotenv().ok();
 
-  let operation = GetProjectUser::build_query(get_project_user::Variables {
+  let octocrab = octocrab::OctocrabBuilder::new()
+    .personal_token(env::var("GITHUB_TOKEN")?)
+    .build()?;
+
+  let get_project_id = GetProjectUser::build_query(get_project_user::Variables {
     project_owner_name: "JenSeReal".to_string(),
     project_number: 3,
   });
 
-  dbg!(serde_json::to_string(&operation)?);
+  let get_project_id_res: Response<get_project_user::ResponseData> =
+    octocrab.post("graphql", Some(&get_project_id)).await?;
 
-  let octocrab = octocrab::OctocrabBuilder::new()
-    .personal_token(env::var("GITHUB_TOKEN")?)
-    .build()
-    .unwrap();
-  let response: Response<get_project_user::ResponseData> =
-    octocrab.post("graphql", Some(&operation)).await.unwrap();
-  println!(
-    "response: {:#?}",
-    response
-      .data
-      .and_then(|data| data.user)
-      .and_then(|user| user.project_v2)
-      .map(|project| project.id)
-  );
+  let project_id = get_project_id_res
+    .data
+    .and_then(|data| Some(data.user?.project_v2?.id))
+    .context("Could not get project id")?;
+
+  dbg!(project_id);
+
   Ok(())
 }
